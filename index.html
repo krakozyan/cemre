@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cemre Tersanesi - HAV Design Hukuki Analiz Paneli</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; scroll-behavior: smooth; }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 650px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 350px; 
+            max-height: 400px; 
+        }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .nav-active { border-bottom: 3px solid #1e40af; color: #1e3a8a; font-weight: 700; }
+        .section-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .timeline-dot { position: absolute; left: -9px; top: 0; width: 20px; height: 20px; border-radius: 50%; border: 4px solid white; box-shadow: 0 0 0 2px #3b82f6; background-color: #3b82f6; }
+    </style>
+    <!-- Chosen Palette: Corporate Slate & Professional Blue -->
+    <!-- Application Structure Plan: 
+         - Tek sayfa (SPA) mimarisi.
+         - 5 Ana Bölüm: Durum Özeti, Hukuk Hiyerarşisi, Teknik/Garanti Analizi, Finansal Riskler ve Stratejik Aksiyon Planı.
+         - Vanilla JS ile DOM manipülasyonu yapılarak bölümler arası geçiş sağlanır.
+         - Chart.js ile garanti süreleri görselleştirilir.
+    -->
+    <!-- Visualization & Content Choices: 
+         - Bar Chart (Chart.js): Garanti sürelerini karşılaştırmak için.
+         - Interactive Steps: Aksiyon planını görselleştirmek için.
+         - Status Badges: Proje durumlarını hızlıca göstermek için.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Navigasyon -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-900 flex items-center justify-center text-white font-bold rounded-lg text-xl shadow-lg">C</div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-extrabold text-slate-800 tracking-tight">CEMRE <span class="text-blue-700 font-medium">ANALİZ</span></span>
+                        <span class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">Hukuki Görüş Paneli v1.0</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <button onclick="showSection('summary')" id="btn-summary" class="nav-btn py-7 transition-all nav-active">Özet</button>
+                    <button onclick="showSection('legal')" id="btn-legal" class="nav-btn py-7 text-slate-500 hover:text-blue-700 transition-all">Sözleşme</button>
+                    <button onclick="showSection('technical')" id="btn-technical" class="nav-btn py-7 text-slate-500 hover:text-blue-700 transition-all">Teknik/Garanti</button>
+                    <button onclick="showSection('financial')" id="btn-financial" class="nav-btn py-7 text-slate-500 hover:text-blue-700 transition-all">Finansal</button>
+                    <button onclick="showSection('actions')" id="btn-actions" class="nav-btn py-7 text-slate-500 hover:text-blue-700 transition-all">Aksiyon Planı</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+        
+        <!-- BÖLÜM 1: ÖZET -->
+        <div id="section-summary" class="section-content space-y-8 animate-in fade-in duration-500">
+            <header class="max-w-3xl">
+                <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Hukuki Durum Özeti</h1>
+                <p class="mt-4 text-lg text-slate-600 leading-relaxed">
+                    HAV Design AS ile NB1094 ve NB1097 projelerine dair yaşanan ihtilafların Norveç Hukuku perspektifinden analizi. Bu panel, Esenyel & Partners aracılığıyla alınan 11 Aralık 2024 tarihli hukuki görüşe dayanmaktadır.
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 card-shadow">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center mb-4 font-bold text-xl">01</div>
+                    <h3 class="text-lg font-bold text-slate-800">Sözleşme Hiyerarşisi</h3>
+                    <p class="mt-2 text-sm text-slate-500 leading-relaxed">Ana sözleşme metni, eklerdeki (appendices) kısıtlayıcı maddelerden önce gelir ve bağlayıcıdır.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 card-shadow">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center mb-4 font-bold text-xl">02</div>
+                    <h3 class="text-lg font-bold text-slate-800">Garanti İhtilafı</h3>
+                    <p class="mt-2 text-sm text-slate-500 leading-relaxed">18/36 aylık garanti süreleri, tedarikçi tekliflerindeki kısa sürelerden (12 ay) üstündür.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 card-shadow">
+                    <div class="w-12 h-12 bg-red-100 text-red-700 rounded-xl flex items-center justify-center mb-4 font-bold text-xl">03</div>
+                    <h3 class="text-lg font-bold text-slate-800">Mahsup Riski</h3>
+                    <p class="mt-2 text-sm text-slate-500 leading-relaxed">NB1097 ödemelerinin NB1094 borçlarına mahsup edilmesi ciddi bir finansal risk ve "Buyer's Risk" yaratmaktadır.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BÖLÜM 2: SÖZLEŞME HİYERARŞİSİ -->
+        <div id="section-legal" class="section-content hidden space-y-8 animate-in fade-in duration-500">
+            <div class="bg-white rounded-2xl border border-slate-200 p-8 card-shadow">
+                <h2 class="text-2xl font-bold text-slate-900 border-b pb-4">Norveç Hukuku ve Sözleşme Yapısı</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8">
+                    <div class="space-y-6">
+                        <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-blue-800">
+                            <h4 class="font-bold text-blue-900">Bölüm 1-4 Önceliği</h4>
+                            <p class="text-sm text-slate-600 mt-2">Sözleşme Formu'nun 1.4 maddesi, herhangi bir çelişki durumunda ana sözleşme metninin eklere üstün olduğunu açıkça belirtir.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-slate-400">
+                            <h4 class="font-bold text-slate-700">Objektif Yorum İlkesi</h4>
+                            <p class="text-sm text-slate-600 mt-2">Ticari taraflar arasındaki sözleşmeler, metnin lafzına (yazılı haline) göre yorumlanır. Teklif aşamasındaki e-postalar metni geçersiz kılmaz.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-center bg-blue-50 p-6 rounded-2xl border border-blue-100">
+                        <h4 class="font-bold text-blue-900 mb-4">Hiyerarşik Sıralama</h4>
+                        <ol class="space-y-3">
+                            <li class="flex items-center space-x-3 text-sm font-semibold text-blue-800 bg-white p-3 rounded-lg shadow-sm border border-blue-200">
+                                <span class="bg-blue-800 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+                                <span>Ana Sözleşme Metni</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm font-medium text-slate-600 bg-slate-100/50 p-3 rounded-lg">
+                                <span class="bg-slate-400 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+                                <span>Teknik Şartname (Ek 1)</span>
+                            </li>
+                            <li class="flex items-center space-x-3 text-sm font-medium text-slate-400 bg-slate-100/50 p-3 rounded-lg">
+                                <span class="bg-slate-300 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
+                                <span>Tedarikçi Teklifleri (Ek 2)</span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BÖLÜM 3: TEKNİK VE GARANTİ -->
+        <div id="section-technical" class="section-content hidden space-y-8 animate-in fade-in duration-500">
+            <div class="bg-white rounded-2xl border border-slate-200 p-8 card-shadow">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Garanti ve Teknik Kusurlar</h2>
+                        <p class="text-slate-500 mt-1">Sözleşme kapsamındaki ekipman garanti sürelerinin karşılaştırması.</p>
+                    </div>
+                    <span class="px-4 py-1.5 bg-red-100 text-red-700 text-xs font-bold rounded-full uppercase tracking-wider">Kritik İhtilaf Alanı</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="chart-container">
+                        <canvas id="warrantyChart"></canvas>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="p-5 bg-white border border-slate-200 rounded-xl shadow-sm">
+                            <h4 class="font-bold text-slate-800 flex items-center gap-2">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full"></span> Scania / ABC Motor Sorunu
+                            </h4>
+                            <p class="text-sm text-slate-600 mt-2 leading-relaxed">HAV Design, üretici garantilerini (max 22 ay) öne sürüyor. Cemre, teslimat sonrası 18 aylık ana sözleşme garantisini talep etmektedir.</p>
+                        </div>
+                        <div class="p-5 bg-white border border-slate-200 rounded-xl shadow-sm">
+                            <h4 class="font-bold text-slate-800 flex items-center gap-2">
+                                <span class="w-2 h-2 bg-amber-500 rounded-full"></span> Nordhavn Soğutma Sistemi
+                            </h4>
+                            <p class="text-sm text-slate-600 mt-2 leading-relaxed">Tasarım hatası iddiası: "Gross Negligence" (Ağır İhmal) ispatı durumunda HAV'ın tüm sorumluluk sınırları (cap) ortadan kalkar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BÖLÜM 4: FİNANSAL RİSKLER -->
+        <div id="section-financial" class="section-content hidden space-y-8 animate-in fade-in duration-500">
+            <div class="bg-white rounded-2xl border border-slate-200 p-8 card-shadow">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6">Finansal Pozisyon ve Ödeme Riski</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-slate-900 text-white p-8 rounded-2xl relative overflow-hidden">
+                        <div class="relative z-10">
+                            <h3 class="text-xl font-bold mb-4">Mahsup (Set-off) Tehlikesi</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-6">HAV Design, NB1097 için gönderilen ödemeyi NB1094'teki alacaklarına sayarak hesapları kapatma eğilimindedir.</p>
+                            <div class="flex items-center gap-4 text-2xl font-mono text-blue-400">
+                                <span class="text-sm text-slate-500 font-sans">Faiz Riski:</span> Euribor + %2
+                            </div>
+                        </div>
+                        <div class="absolute right-[-20px] bottom-[-20px] opacity-10 text-9xl font-bold">€</div>
+                    </div>
+                    <div class="bg-red-50 p-8 rounded-2xl border border-red-100">
+                        <h3 class="text-xl font-bold text-red-900 mb-4">Alıcı Riski (Buyer's Risk)</h3>
+                        <p class="text-red-800 text-sm leading-relaxed">
+                            Genel prensip: Alıcı, teslimat sözleşmeye uygun değilse ödemeyi alıkoyabilir. 
+                            <strong>Ancak;</strong> eğer alıcının kusur tespiti haksız çıkarsa, HAV Design hizmeti askıya alma veya sözleşmeyi feshetme hakkına sahip olur.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BÖLÜM 5: AKSİYON PLANI -->
+        <div id="section-actions" class="section-content hidden space-y-8 animate-in fade-in duration-500">
+            <div class="bg-white rounded-2xl border border-slate-200 p-8 card-shadow">
+                <h2 class="text-2xl font-bold text-slate-900 mb-10">Stratejik Yol Haritası</h2>
+                
+                <div class="relative border-l-2 border-slate-200 ml-3 space-y-12">
+                    <!-- Step 1 -->
+                    <div class="relative pl-10">
+                        <div class="timeline-dot"></div>
+                        <h4 class="text-lg font-bold text-slate-800">Resmi Bildirim (Hemen)</h4>
+                        <p class="text-slate-500 text-sm mt-2 max-w-xl leading-relaxed">Ekipmanlardaki tüm teknik kusurların ve garanti sürelerine dair itirazların "yazılı ve resmi" olarak iletilmesi. Zımni kabul riskinin ortadan kaldırılması.</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="relative pl-10">
+                        <div class="timeline-dot"></div>
+                        <h4 class="text-lg font-bold text-slate-800">Teknik Raporlama</h4>
+                        <p class="text-slate-500 text-sm mt-2 max-w-xl leading-relaxed">Motor ve soğutma sistemi hatalarının "Tasarım Hatası" olduğunun bağımsız mühendislik raporlarıyla tespiti (Ağır İhmal iddiasını güçlendirmek için).</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="relative pl-10">
+                        <div class="timeline-dot"></div>
+                        <h4 class="text-lg font-bold text-slate-800">Koşullu Ödeme Stratejisi</h4>
+                        <p class="text-slate-500 text-sm mt-2 max-w-xl leading-relaxed">NB1097 ödemelerinin, NB1094'teki teknik düzeltmelerin garanti altına alınması koşuluyla (Escrow veya teminat) yapılması yönünde müzakere.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-10 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-400 text-sm">© 2024 Cemre Marin Endüstri A.S. | Gizli ve Şahsa Özel Analiz Paneli</p>
+            <div class="mt-4 flex justify-center space-x-4 opacity-50 grayscale">
+                <span class="text-[10px] font-bold border border-slate-300 px-2 py-1 rounded">NORWEGIAN LAW</span>
+                <span class="text-[10px] font-bold border border-slate-300 px-2 py-1 rounded">MARITIME DISPUTE</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigasyon Mantığı
+        function showSection(sectionId) {
+            // Tüm bölümleri gizle
+            document.querySelectorAll('.section-content').forEach(s => s.classList.add('hidden'));
+            // Hedef bölümü göster
+            document.getElementById('section-' + sectionId).classList.remove('hidden');
+            
+            // Navigasyon butonlarını güncelle
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('nav-active', 'text-blue-800');
+                b.classList.add('text-slate-500');
+            });
+            document.getElementById('btn-' + sectionId).classList.add('nav-active');
+            document.getElementById('btn-' + sectionId).classList.remove('text-slate-500');
+
+            // Eğer teknik/garanti bölümü açıldıysa grafiği çiz
+            if(sectionId === 'technical') {
+                initChart();
+            }
+        }
+
+        // Grafik Mantığı
+        let myChart = null;
+        function initChart() {
+            const ctx = document.getElementById('warrantyChart').getContext('2d');
+            if(myChart) myChart.destroy();
+            
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Cemre Talebi (Ana Söz.)', 'HAV Design (Scania)', 'Nordhavn Teklifi'],
+                    datasets: [{
+                        label: 'Garanti Süresi (Ay)',
+                        data: [36, 22, 12],
+                        backgroundColor: [
+                            'rgba(30, 64, 175, 0.85)',
+                            'rgba(148, 163, 184, 0.6)',
+                            'rgba(245, 158, 11, 0.6)'
+                        ],
+                        borderRadius: 8,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 40,
+                            ticks: { stepSize: 6 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Sayfa Yükleme
+        window.onload = () => {
+            // Başlangıç animasyonu
+            console.log("Cemre Hukuki Analiz Paneli Hazır.");
+        };
+    </script>
+</body>
+</html>
